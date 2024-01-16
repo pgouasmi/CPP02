@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Fixed.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pgouasmi <pgouasmi@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: pgouasmi <pgouasmi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 15:25:46 by pgouasmi          #+#    #+#             */
-/*   Updated: 2024/01/09 15:39:47 by pgouasmi         ###   ########.fr       */
+/*   Updated: 2024/01/16 12:49:42 by pgouasmi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 Fixed::Fixed()
 {
-	Number = 0;
 	std::cout << "Default Constructor called" << std::endl;
+	Number = 0;
 }
 
 Fixed::Fixed(const Fixed &obj)
@@ -26,13 +26,15 @@ Fixed::Fixed(const Fixed &obj)
 
 Fixed::Fixed(const int nb)
 {
-	Number = nb;
+	std::cout << "Int constructor called" << std::endl;
+	Number = roundf(nb * (1 << BitsNumber));
 }
 
 Fixed::Fixed(const float nb)
 {
-	Number = nb;
-	toInt();
+
+	std::cout << "Float constructor called" << std::endl;
+	Number = roundf(nb * (1 << BitsNumber));
 }
 
 Fixed::~Fixed()
@@ -47,6 +49,12 @@ Fixed& Fixed::operator=(const Fixed& obj)
 	std::cout << "Copy assignment called" << std::endl;
 	Number = obj.getRawBits();
 	return *this;
+}
+
+std::ostream&  operator<<(std::ostream& os, const Fixed& obj)
+{
+	os << obj.toFloat();
+	return os;
 }
 
 int Fixed::getRawBits() const
@@ -68,7 +76,7 @@ int		Fixed::toInt() const
 
 float	Fixed::toFloat() const
 {
-	return Number * 256;
+	return (float)Number / 256.0f;
 }
 
 
